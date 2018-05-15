@@ -17,8 +17,10 @@ import (
 // So to find real ping.exe we stop on latest entry
 func get_real_pinger_path() string {
 	real_ping_filename := "ping"
+	path_separator := ":"
 	if runtime.GOOS == "windows" {
 		real_ping_filename = "ping.exe"
+		path_separator = ";"
 	}
 
 	real_pinger_path := ""
@@ -27,7 +29,7 @@ func get_real_pinger_path() string {
 	for _, e := range os.Environ() {
 		pair := strings.Split(e, "=")
 		if strings.EqualFold(pair[0], "pAth") {
-			folders = strings.Split(pair[1], ";")
+			folders = strings.Split(pair[1], path_separator)
 		}
 	}
 	for _, folder := range folders {
